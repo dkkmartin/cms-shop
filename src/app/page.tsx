@@ -1,113 +1,217 @@
-import Image from "next/image";
+import { ShoppingCart, Menu, ChevronDown, Search } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Input } from '@/components/ui/input';
+import Image from 'next/image';
+import HeaderNav from '@/components/header';
 
 export default function Home() {
+  const brands = [
+    { name: 'Nike', image: 'https://placehold.co/100' },
+    { name: 'Adidas', image: 'https://placehold.co/100' },
+    { name: 'Puma', image: 'https://placehold.co/100' },
+    { name: 'Reebok', image: 'https://placehold.co/100' },
+    { name: 'New Balance', image: 'https://placehold.co/100' },
+  ];
+
+  const sneakers = [
+    {
+      id: 1,
+      name: 'Air Max 90',
+      brand: 'Nike',
+      price: 129.99,
+      image: 'https://placehold.co/200',
+    },
+    {
+      id: 2,
+      name: 'Ultra Boost',
+      brand: 'Adidas',
+      price: 179.99,
+      image: 'https://placehold.co/200',
+    },
+    {
+      id: 3,
+      name: 'Classic Leather',
+      brand: 'Reebok',
+      price: 79.99,
+      image: 'https://placehold.co/200',
+    },
+    {
+      id: 4,
+      name: 'Zoom Pegasus',
+      brand: 'Nike',
+      price: 119.99,
+      image: 'https://placehold.co/200',
+    },
+    {
+      id: 5,
+      name: 'RS-X',
+      brand: 'Puma',
+      price: 109.99,
+      image: 'https://placehold.co/200',
+    },
+    {
+      id: 6,
+      name: '990v5',
+      brand: 'New Balance',
+      price: 174.99,
+      image: 'https://placehold.co/200',
+    },
+    {
+      id: 7,
+      name: 'Superstar',
+      brand: 'Adidas',
+      price: 89.99,
+      image: 'https://placehold.co/200',
+    },
+    {
+      id: 8,
+      name: 'Air Force 1',
+      brand: 'Nike',
+      price: 99.99,
+      image: 'https://placehold.co/200',
+    },
+  ];
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
+    <div className="flex flex-col min-h-screen bg-gray-100 dark:bg-gray-900">
+      <HeaderNav />
+      <main className="flex-1">
+        <section className="w-full py-12 md:py-24 lg:py-32 bg-blue-50 dark:bg-blue-900">
+          <div className="container px-4 md:px-6">
+            <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
+              <Image
+                alt="Featured Sneaker - Air Zoom Infinity"
+                className="mx-auto aspect-square overflow-hidden rounded-xl object-cover object-center sm:w-full lg:order-last"
+                width={400}
+                height={400}
+                src="https://placehold.co/400"
+              />
+              <div className="flex flex-col justify-center space-y-4">
+                <div className="space-y-2">
+                  <Badge
+                    variant="secondary"
+                    className="bg-blue-200 text-blue-800 dark:bg-blue-800 dark:text-blue-200"
+                  >
+                    New Release
+                  </Badge>
+                  <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none text-blue-800 dark:text-blue-100">
+                    Air Zoom Infinity
+                  </h1>
+                  <p className="max-w-[600px] text-gray-500 md:text-xl dark:text-gray-400">
+                    Experience unparalleled comfort and style with our latest innovation in sneaker
+                    technology.
+                  </p>
+                </div>
+                <div className="flex flex-col gap-2 min-[400px]:flex-row">
+                  <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white">
+                    Shop Now
+                  </Button>
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="border-blue-600 text-blue-600 hover:bg-blue-50"
+                  >
+                    Learn More
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section className="w-full py-12 md:py-24 lg:py-32 bg-white dark:bg-gray-800">
+          <div className="container px-4 md:px-6">
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl mb-8 text-center text-gray-800 dark:text-gray-200">
+              Shop by Brand
+            </h2>
+            <div className="flex justify-center gap-8 flex-wrap">
+              {brands.map((brand) => (
+                <div key={brand.name} className="flex flex-col items-center">
+                  <Image
+                    src={brand.image}
+                    alt={`${brand.name} logo`}
+                    className="w-20 h-20 object-contain mb-2"
+                    width={100}
+                    height={100}
+                  />
+                  <span className="text-sm font-medium text-gray-600 dark:text-gray-300">
+                    {brand.name}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+        <section className="w-full py-12 md:py-24 lg:py-32">
+          <div className="container px-4 md:px-6">
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl mb-8 text-center text-gray-800 dark:text-gray-200">
+              Featured Sneakers
+            </h2>
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {sneakers.map((sneaker) => (
+                <Card key={sneaker.id} className="bg-white dark:bg-gray-800">
+                  <CardHeader>
+                    <Image
+                      alt={sneaker.name}
+                      className="aspect-square object-cover w-full rounded-md"
+                      height="200"
+                      src={sneaker.image}
+                      width="200"
+                    />
+                  </CardHeader>
+                  <CardContent>
+                    <CardTitle className="text-blue-600 dark:text-blue-400">
+                      {sneaker.name}
+                    </CardTitle>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">{sneaker.brand}</p>
+                    <p className="text-sm font-bold text-gray-900 dark:text-gray-100">
+                      ${sneaker.price.toFixed(2)}
+                    </p>
+                  </CardContent>
+                  <CardFooter className="flex flex-col gap-2">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="outline" className="w-full">
+                          Select Size
+                          <ChevronDown className="ml-2 h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent>
+                        {[7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5, 11].map((size) => (
+                          <DropdownMenuItem key={size}>{size}</DropdownMenuItem>
+                        ))}
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                    <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+                      Add to Cart
+                    </Button>
+                  </CardFooter>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
+      </main>
+      <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t bg-white dark:bg-gray-800">
+        <p className="text-xs text-gray-500 dark:text-gray-400">
+          © 2023 SneakerSpot. All rights reserved.
         </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:size-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
+        <nav className="sm:ml-auto flex gap-4 sm:gap-6">
+          <a className="text-xs hover:underline underline-offset-4" href="#">
+            Terms of Service
           </a>
-        </div>
-      </div>
-
-      <div className="relative z-[-1] flex place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 sm:before:w-[480px] sm:after:w-[240px] before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-balance text-sm opacity-50">
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+          <a className="text-xs hover:underline underline-offset-4" href="#">
+            Privacy
+          </a>
+        </nav>
+      </footer>
+    </div>
   );
 }
