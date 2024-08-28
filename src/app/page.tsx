@@ -1,4 +1,4 @@
-import { ShoppingCart, Menu, ChevronDown, Search } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -8,17 +8,17 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Input } from '@/components/ui/input';
 import Image from 'next/image';
 import HeaderNav from '@/components/header';
+import { Root } from '@/types/products';
+import Link from 'next/link';
 
-export default function Home() {
+export default async function Home() {
   const brands = [
-    { name: 'Nike', image: 'https://placehold.co/100' },
-    { name: 'Adidas', image: 'https://placehold.co/100' },
-    { name: 'Puma', image: 'https://placehold.co/100' },
-    { name: 'Reebok', image: 'https://placehold.co/100' },
-    { name: 'New Balance', image: 'https://placehold.co/100' },
+    { name: 'Nike', slug: 'nike', image: '/nike.svg' },
+    { name: 'Adidas', slug: 'adidas', image: '/adidas.svg' },
+    { name: 'Jordans', slug: 'jordans', image: '/jordan.svg' },
+    { name: 'New Balance', slug: 'new-balance', image: '/new-balance.svg' },
   ];
 
   const sneakers = [
@@ -80,6 +80,24 @@ export default function Home() {
     },
   ];
 
+  const fetchData = async () => {
+    const res = await fetch(
+      'http://192.168.0.9/sneakerspot/wp-json/wp/v2/products?acf_format=standard'
+    );
+    if (!res.ok) {
+      throw new Error('Failed to fetch data');
+    }
+    return res.json();
+  };
+
+  const data: Root = await fetchData();
+
+  const randomIndex = () => {
+    return Math.floor(Math.random() * data.length);
+  };
+
+  const randomNumber = randomIndex();
+
   return (
     <div className="flex flex-col min-h-screen bg-gray-100 dark:bg-gray-900">
       <HeaderNav />
@@ -89,10 +107,10 @@ export default function Home() {
             <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
               <Image
                 alt="Featured Sneaker - Air Zoom Infinity"
-                className="mx-auto aspect-square overflow-hidden rounded-xl object-cover object-center sm:w-full lg:order-last"
+                className="mx-auto aspect-square overflow-hidden rounded-xl object-contain object-center sm:w-full lg:order-last"
                 width={400}
                 height={400}
-                src="https://placehold.co/400"
+                src={data[randomNumber].acf.thumbnail.url}
               />
               <div className="flex flex-col justify-center space-y-4">
                 <div className="space-y-2">
@@ -103,7 +121,7 @@ export default function Home() {
                     New Release
                   </Badge>
                   <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none text-blue-800 dark:text-blue-100">
-                    Air Zoom Infinity
+                    {data[randomNumber].title.rendered}
                   </h1>
                   <p className="max-w-[600px] text-gray-500 md:text-xl dark:text-gray-400">
                     Experience unparalleled comfort and style with our latest innovation in sneaker
@@ -133,18 +151,20 @@ export default function Home() {
             </h2>
             <div className="flex justify-center gap-8 flex-wrap">
               {brands.map((brand) => (
-                <div key={brand.name} className="flex flex-col items-center">
-                  <Image
-                    src={brand.image}
-                    alt={`${brand.name} logo`}
-                    className="w-20 h-20 object-contain mb-2"
-                    width={100}
-                    height={100}
-                  />
-                  <span className="text-sm font-medium text-gray-600 dark:text-gray-300">
-                    {brand.name}
-                  </span>
-                </div>
+                <Link href={`/products/${brand.slug}`} key={brand.name}>
+                  <div className="flex flex-col items-center">
+                    <Image
+                      src={brand.image}
+                      alt={`${brand.name} logo`}
+                      className="w-20 h-20 object-contain mb-2"
+                      width={100}
+                      height={100}
+                    />
+                    <span className="text-sm font-medium text-gray-600 dark:text-gray-300">
+                      {brand.name}
+                    </span>
+                  </div>
+                </Link>
               ))}
             </div>
           </div>
