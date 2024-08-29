@@ -1,17 +1,11 @@
-import { ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 import Image from 'next/image';
 import HeaderNav from '@/components/header';
 import { Root } from '@/types/products';
 import Link from 'next/link';
+import { IP } from '@/lib/utils';
 
 export default async function Home() {
   const brands = [
@@ -21,69 +15,8 @@ export default async function Home() {
     { name: 'New Balance', slug: 'new-balance', image: '/new-balance.svg' },
   ];
 
-  const sneakers = [
-    {
-      id: 1,
-      name: 'Air Max 90',
-      brand: 'Nike',
-      price: 129.99,
-      image: 'https://placehold.co/200',
-    },
-    {
-      id: 2,
-      name: 'Ultra Boost',
-      brand: 'Adidas',
-      price: 179.99,
-      image: 'https://placehold.co/200',
-    },
-    {
-      id: 3,
-      name: 'Classic Leather',
-      brand: 'Reebok',
-      price: 79.99,
-      image: 'https://placehold.co/200',
-    },
-    {
-      id: 4,
-      name: 'Zoom Pegasus',
-      brand: 'Nike',
-      price: 119.99,
-      image: 'https://placehold.co/200',
-    },
-    {
-      id: 5,
-      name: 'RS-X',
-      brand: 'Puma',
-      price: 109.99,
-      image: 'https://placehold.co/200',
-    },
-    {
-      id: 6,
-      name: '990v5',
-      brand: 'New Balance',
-      price: 174.99,
-      image: 'https://placehold.co/200',
-    },
-    {
-      id: 7,
-      name: 'Superstar',
-      brand: 'Adidas',
-      price: 89.99,
-      image: 'https://placehold.co/200',
-    },
-    {
-      id: 8,
-      name: 'Air Force 1',
-      brand: 'Nike',
-      price: 99.99,
-      image: 'https://placehold.co/200',
-    },
-  ];
-
   const fetchData = async () => {
-    const res = await fetch(
-      'http://192.168.0.9/sneakerspot/wp-json/wp/v2/products?acf_format=standard'
-    );
+    const res = await fetch(`http://${IP}/sneakerspot/wp-json/wp/v2/products?acf_format=standard`);
     if (!res.ok) {
       throw new Error('Failed to fetch data');
     }
@@ -129,16 +62,11 @@ export default async function Home() {
                   </p>
                 </div>
                 <div className="flex flex-col gap-2 min-[400px]:flex-row">
-                  <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white">
-                    Shop Now
-                  </Button>
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    className="border-blue-600 text-blue-600 hover:bg-blue-50"
-                  >
-                    Learn More
-                  </Button>
+                  <Link href={`/product/${data[randomNumber].id}`}>
+                    <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white">
+                      Learn More
+                    </Button>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -151,7 +79,7 @@ export default async function Home() {
             </h2>
             <div className="flex justify-center gap-8 flex-wrap">
               {brands.map((brand) => (
-                <Link href={`/products/${brand.slug}`} key={brand.name}>
+                <Link href={`/product/${brand.slug}`} key={brand.name}>
                   <div className="flex flex-col items-center">
                     <Image
                       src={brand.image}
@@ -175,43 +103,36 @@ export default async function Home() {
               Featured Sneakers
             </h2>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {sneakers.map((sneaker) => (
+              {data.slice(0, 8).map((sneaker) => (
                 <Card key={sneaker.id} className="bg-white dark:bg-gray-800">
                   <CardHeader>
                     <Image
-                      alt={sneaker.name}
-                      className="aspect-square object-cover w-full rounded-md"
+                      alt={sneaker.title.rendered}
+                      className="aspect-square object-contain w-full rounded-md"
                       height="200"
-                      src={sneaker.image}
+                      src={sneaker.acf.thumbnail.url}
                       width="200"
                     />
                   </CardHeader>
-                  <CardContent>
+                  <CardContent className="grid h-36">
                     <CardTitle className="text-blue-600 dark:text-blue-400">
-                      {sneaker.name}
+                      {sneaker.title.rendered}
                     </CardTitle>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">{sneaker.brand}</p>
-                    <p className="text-sm font-bold text-gray-900 dark:text-gray-100">
-                      ${sneaker.price.toFixed(2)}
-                    </p>
+                    <div className="self-end">
+                      <p className="text-sm text-gray-500 dark:text-gray-400">
+                        {sneaker.acf.category.name}
+                      </p>
+                      <p className="text-sm font-bold text-gray-900 dark:text-gray-100">
+                        {sneaker.acf.price},-
+                      </p>
+                    </div>
                   </CardContent>
-                  <CardFooter className="flex flex-col gap-2">
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="outline" className="w-full">
-                          Select Size
-                          <ChevronDown className="ml-2 h-4 w-4" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent>
-                        {[7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5, 11].map((size) => (
-                          <DropdownMenuItem key={size}>{size}</DropdownMenuItem>
-                        ))}
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                    <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
-                      Add to Cart
-                    </Button>
+                  <CardFooter className="">
+                    <Link href={`/product/${sneaker.id}`} className="w-full">
+                      <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+                        See more
+                      </Button>
+                    </Link>
                   </CardFooter>
                 </Card>
               ))}
