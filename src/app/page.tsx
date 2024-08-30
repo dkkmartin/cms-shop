@@ -16,7 +16,7 @@ export default async function Home() {
   ];
 
   const fetchData = async () => {
-    const res = await fetch(`http://${IP}/sneakerspot/wp-json/wp/v2/products?acf_format=standard`);
+    const res = await fetch(`http://${IP}/sneakerspot/wp-json/wp/v2/product?acf_format=standard`);
     if (!res.ok) {
       throw new Error('Failed to fetch data');
     }
