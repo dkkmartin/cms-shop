@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { IP } from '@/lib/utils';
 import { Root } from '@/types/product';
 import { Badge } from '@/components/ui/badge';
-import HeaderNav from '@/components/header';
+import HeaderFooterLayout from '@/components/headerFooterLayout';
 
 export default async function SneakerPage({ params }: { params: { id: string } }) {
   const fetchData = async () => {
@@ -22,8 +22,7 @@ export default async function SneakerPage({ params }: { params: { id: string } }
 
   if (data) {
     return (
-      <>
-        <HeaderNav />
+      <HeaderFooterLayout className="min-h-[calc(100dvh-128px)]">
         <div className="container mx-auto px-4 py-8">
           <Link
             href="/"
@@ -58,7 +57,7 @@ export default async function SneakerPage({ params }: { params: { id: string } }
             </div>
           </div>
         </div>
-      </>
+      </HeaderFooterLayout>
     );
   }
 }
