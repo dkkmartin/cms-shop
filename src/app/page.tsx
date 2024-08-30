@@ -6,6 +6,8 @@ import HeaderNav from '@/components/header';
 import { Root } from '@/types/products';
 import Link from 'next/link';
 import { IP } from '@/lib/utils';
+import Footer from '@/components/footer';
+import HeaderFooterLayout from '@/components/headerFooterLayout';
 
 export default async function Home() {
   const brands = [
@@ -33,8 +35,7 @@ export default async function Home() {
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100 dark:bg-gray-900">
-      <HeaderNav />
-      <main className="flex-1">
+      <HeaderFooterLayout>
         <section className="w-full py-12 md:py-24 lg:py-32 bg-blue-50 dark:bg-blue-900">
           <div className="container px-4 md:px-6">
             <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
@@ -139,20 +140,7 @@ export default async function Home() {
             </div>
           </div>
         </section>
-      </main>
-      <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t bg-white dark:bg-gray-800">
-        <p className="text-xs text-gray-500 dark:text-gray-400">
-          © 2023 SneakerSpot. All rights reserved.
-        </p>
-        <nav className="sm:ml-auto flex gap-4 sm:gap-6">
-          <a className="text-xs hover:underline underline-offset-4" href="#">
-            Terms of Service
-          </a>
-          <a className="text-xs hover:underline underline-offset-4" href="#">
-            Privacy
-          </a>
-        </nav>
-      </footer>
+      </HeaderFooterLayout>
     </div>
   );
 }
