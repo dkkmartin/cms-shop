@@ -2,18 +2,16 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import Image from 'next/image';
-import HeaderNav from '@/components/header';
 import { Root } from '@/types/products';
 import Link from 'next/link';
 import { IP } from '@/lib/utils';
-import Footer from '@/components/footer';
 import HeaderFooterLayout from '@/components/headerFooterLayout';
 
 export default async function Home() {
   const brands = [
     { name: 'Nike', slug: 'nike', image: '/nike.svg' },
     { name: 'Adidas', slug: 'adidas', image: '/adidas.svg' },
-    { name: 'Jordans', slug: 'jordans', image: '/jordan.svg' },
+    { name: 'Jordans', slug: 'air-jordans', image: '/jordan.svg' },
     { name: 'New Balance', slug: 'new-balance', image: '/new-balance.svg' },
   ];
 
@@ -80,7 +78,10 @@ export default async function Home() {
             </h2>
             <div className="flex justify-center gap-8 flex-wrap">
               {brands.map((brand) => (
-                <Link href={`/product/${brand.slug}`} key={brand.name}>
+                <Link
+                  href={{ pathname: '/products', query: { brand: brand.slug } }}
+                  key={brand.name}
+                >
                   <div className="flex flex-col items-center">
                     <Image
                       src={brand.image}
